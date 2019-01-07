@@ -10,5 +10,5 @@ func _ready():
 	pass
 
 func _process(delta):
-	#TODO get rotation of mouse and 
+	#TODO get rotation of mouse and me it "forward"
 	pass
