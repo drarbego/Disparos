@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://sprites/bullet.png" type="Texture" id=1]
+[ext_resource path="res://scripts/bullet.gd" type="Script" id=1]
+[ext_resource path="res://sprites/bullet.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -27,6 +28,8 @@ linear_velocity = Vector2( 0, 0 )
 linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
+script = ExtResource( 1 )
+speed = 200
 
 [node name="shape" type="CollisionShape2D" parent="." index="0"]
 
@@ -34,6 +37,6 @@ shape = SubResource( 1 )
 
 [node name="sprite" type="Sprite" parent="." index="1"]
 
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 
 

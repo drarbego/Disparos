@@ -20,7 +20,6 @@ func fire_listener():
 		var bullet = Bullet.instance()
 		bullet.position = position
 		bullet.rotation = rotation
-		self.add_child
 		self.add_child(bullet)
 
 func look_at_mouse():
