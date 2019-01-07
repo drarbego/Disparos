@@ -1,6 +1,7 @@
 extends Area2D
 
 export (int) var speed = 200
+const Bullet = preload("res://scenes/bullet.tscn")
 
 func get_velocity(delta):
 	var velocity = Vector2()
@@ -14,6 +15,14 @@ func get_velocity(delta):
 		velocity.y -= 1
 	return velocity.normalized() * speed * delta
 
+func fire_listener():
+	if Input.is_action_pressed('click'):
+		var bullet = Bullet.instance()
+		bullet.position = position
+		bullet.rotation = rotation
+		self.add_child
+		self.add_child(bullet)
+
 func look_at_mouse():
 	var mouse_pos = get_global_mouse_position()
 	var angle = position.angle_to_point(mouse_pos)
@@ -24,4 +33,5 @@ func _ready():
 
 func _process(delta):
 	look_at_mouse()
+	fire_listener()
 	position += get_velocity(delta)

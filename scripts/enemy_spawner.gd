@@ -1,5 +1,6 @@
 extends Node
 
+var enemy_index = 0;
 const Enemy = preload("res://scenes/enemy.tscn")
 
 func get_spawners():
@@ -11,6 +12,7 @@ func get_spawners():
 	return spawners
 
 func spawn():
+	print("spawning enemy ", enemy_index)
 	var spawners = get_spawners()
 	
 	randomize()
