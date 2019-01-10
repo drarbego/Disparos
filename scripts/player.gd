@@ -16,11 +16,14 @@ func get_velocity(delta):
 	return velocity.normalized() * speed * delta
 
 func fire_listener():
-	if Input.is_action_pressed('click'):
+	if Input.is_action_just_released('click'):
+		print("FIRE!")
 		var bullet = Bullet.instance()
-		bullet.position = position
-		bullet.rotation = rotation
-		self.add_child(bullet)
+		bullet.position = Vector2(0, 0)
+		var dir = get_global_mouse_position() - position
+		var world = get_node("/root/world")
+		bullet.init(position, dir)
+		world.add_child(bullet)
 
 func look_at_mouse():
 	var mouse_pos = get_global_mouse_position()

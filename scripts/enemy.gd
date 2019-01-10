@@ -12,3 +12,5 @@ func _process(delta):
 	var dist = sqrt(direction.x*direction.x + direction.y*direction.y)
 	if dist > 16:
 		position += direction.normalized() * speed * delta
+	else:
+		self.queue_free()

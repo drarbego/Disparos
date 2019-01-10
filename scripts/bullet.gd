@@ -1,15 +1,13 @@
 extends RigidBody2D
 
-export (int) var speed = 200
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var player_position = Vector2()
+var direction = Vector2()
+
+func init(player_pos, dir):
+	direction = dir
+	player_position = player_pos
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
-
-func _process(delta):
-	# move forward
-	self.position.y += speed * delta
+	print(player_position)
+	position = player_position
+	apply_impulse(position, direction)
