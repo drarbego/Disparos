@@ -8,9 +8,10 @@
 custom_solver_bias = 0.0
 extents = Vector2( 16, 16 )
 
-[node name="player" type="Area2D"]
+[node name="player" type="Area2D" groups=[
+"player",
+]]
 
-position = Vector2( 533.39, 305.677 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -19,6 +20,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 __meta__ = {
 "_edit_group_": true
 }
@@ -27,6 +29,7 @@ speed = 200
 [node name="sprite" type="Sprite" parent="." index="0"]
 
 texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="shape" type="CollisionShape2D" parent="." index="1"]
 

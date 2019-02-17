@@ -8,7 +8,7 @@
 custom_solver_bias = 0.0
 extents = Vector2( 16, 16 )
 
-[node name="enemy" type="Area2D" index="0" groups=[
+[node name="enemy" type="Area2D" groups=[
 "enemies",
 ]]
 
@@ -22,6 +22,7 @@ audio_bus_name = "Master"
 script = ExtResource( 1 )
 speed = 100
 freezeTime = 5.0
+numberOfCells = 10
 
 [node name="shape" type="CollisionShape2D" parent="." index="0"]
 
@@ -39,6 +40,8 @@ process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
+
+[connection signal="area_entered" from="." to="." method="_on_enemy_area_entered"]
 
 [connection signal="timeout" from="freeze" to="." method="_on_freeze_timeout"]
 
