@@ -70,14 +70,18 @@ func _on_freeze_timeout():
 	get_node('sprite').texture = defaultTexture
 
 func _on_enemy_area_entered(area):
-	if area.is_in_group("player") && isFrozen:
-		var angle = rad2deg(area.position.angle_to_point(position) + PI)
-		if angle >= 315 || angle < 45:
-			# TODO make sure there is no frozen enemy on the tile at the right
-			position.x += CELL_WIDTH
-		if angle >= 45 && angle < 135:
-			position.y += CELL_HEIGHT
-		if angle >= 135 && angle < 225:
-			position.x -= CELL_WIDTH
-		if angle >= 225 && angle < 315:
-			position.y -= CELL_HEIGHT
+	if area.is_in_group("player"):
+		if isFrozen:
+			var angle = rad2deg(area.position.angle_to_point(position) + PI)
+			if angle >= 315 || angle < 45:
+				# TODO make sure there is no frozen enemy on the tile at the right
+				position.x += CELL_WIDTH
+			if angle >= 45 && angle < 135:
+				position.y += CELL_HEIGHT
+			if angle >= 135 && angle < 225:
+				position.x -= CELL_WIDTH
+			if angle >= 225 && angle < 315:
+				position.y -= CELL_HEIGHT
+		else:
+			print('muerto por jugarle al vergas')
+			get_tree().quit()

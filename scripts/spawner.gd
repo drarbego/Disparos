@@ -14,10 +14,16 @@ func _ready():
 	timer.start()
 
 func _on_timer_timeout():
-	print('spawning')
 	var enemy = Enemy.instance()
-	enemy.position.x = get_viewport().size.x
-	enemy.position.y = get_viewport().size.y
+	var stickTo = randi() % 2;
+	if stickTo == 0:
+		enemy.position.x = 0
+		enemy.position.y = randi() % int(get_viewport().size.y)
+	else:
+		enemy.position.x = randi() % int(get_viewport().size.x)
+		enemy.position.y = 0
+
+
 	self.get_parent().add_child(enemy)
 	timer.wait_time = rand_range(minWaitTime, maxWaitTime)
 	timer.start()

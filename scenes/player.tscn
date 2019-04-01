@@ -35,4 +35,13 @@ _sections_unfolded = [ "Transform" ]
 
 shape = SubResource( 1 )
 
+[node name="canShoot" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[connection signal="timeout" from="canShoot" to="." method="_on_canShoot_timeout"]
+
 
