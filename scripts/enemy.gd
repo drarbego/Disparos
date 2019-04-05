@@ -4,13 +4,14 @@ export(int) var speed
 export(float) var freezeTime
 export(int) var numberOfCells
 var isFrozen = false
-var neighbors = {}
 
 var defaultTexture = preload('res://sprites/enemy.png')
 var frozenTexture = preload('res://sprites/enemy__frozen.png')
 
 onready var CELL_WIDTH = get_viewport().size.x / numberOfCells
 onready var CELL_HEIGHT = get_viewport().size.y / numberOfCells
+
+# TODO add an interface for grid map
 
 func _process(delta):
 	if not isFrozen:
@@ -26,25 +27,20 @@ func getGridPosition(offsetX, offsetY):
 	return Vector2(position.x + offsetX, position.y + offsetY)
 
 func updateNeighbors():
-	# TODO use this information to build a map of tiles and enemies
 	var enemies = get_tree().get_nodes_in_group('enemies')
 	for enemy in enemies:
 		if enemy.isFrozen:
 			var hasNeighbors = false
 			if position == enemy.getGridPosition(-1, 0):
-				neighbors['e'] = enemy
 				enemy.queue_free()
 				hasNeighbors = true
 			if position == enemy.getGridPosition(1, 0):
-				neighbors['w'] = enemy
 				enemy.queue_free()
 				hasNeighbors = true
 			if position == enemy.getGridPosition(0, -1):
-				neighbors['n'] = enemy
 				enemy.queue_free()
 				hasNeighbors = true
 			if position == enemy.getGridPosition(0, 1):
-				neighbors['s'] = enemy
 				enemy.queue_free()
 				hasNeighbors = true
 			if hasNeighbors:
@@ -55,7 +51,6 @@ func freeze():
 	snapToGrid()
 	get_node('sprite').texture = frozenTexture
 	updateNeighbors()
-	print('neighbors = ', neighbors)
 	var timer = get_node('freeze')
 	timer.wait_time = freezeTime
 	timer.start()
@@ -68,6 +63,7 @@ func snapToGrid():
 func _on_freeze_timeout():
 	isFrozen = false
 	get_node('sprite').texture = defaultTexture
+	pass
 
 func _on_enemy_area_entered(area):
 	if area.is_in_group("player"):
@@ -82,6 +78,7 @@ func _on_enemy_area_entered(area):
 				position.x -= CELL_WIDTH
 			if angle >= 225 && angle < 315:
 				position.y -= CELL_HEIGHT
+			self.updateNeighbors()
 		else:
 			print('muerto por jugarle al vergas')
-			get_tree().quit()
+			# get_tree().quit()
