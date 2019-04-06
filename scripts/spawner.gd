@@ -6,7 +6,6 @@ var timer
 
 export(float) var minWaitTime
 export(float) var maxWaitTime
-export(bool) var testMode
 
 func _ready():
 	randomize()
@@ -30,5 +29,4 @@ func spawn():
 	timer.start()
 
 func _on_timer_timeout():
-	if !testMode:
-		spawn()
+	spawn()

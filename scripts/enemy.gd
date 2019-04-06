@@ -11,8 +11,6 @@ var frozenTexture = preload('res://sprites/enemy__frozen.png')
 onready var CELL_WIDTH = get_viewport().size.x / numberOfCells
 onready var CELL_HEIGHT = get_viewport().size.y / numberOfCells
 
-# TODO add an interface for grid map
-
 func _process(delta):
 	if not isFrozen:
 		var player = get_node('/root/world/player')
@@ -51,6 +49,7 @@ func freeze():
 	snapToGrid()
 	get_node('sprite').texture = frozenTexture
 	updateNeighbors()
+	get_node('/root/world').addToScore(1)
 	var timer = get_node('freeze')
 	timer.wait_time = freezeTime
 	timer.start()
@@ -81,4 +80,4 @@ func _on_enemy_area_entered(area):
 			self.updateNeighbors()
 		else:
 			print('muerto por jugarle al vergas')
-			# get_tree().quit()
+			get_tree().quit()
