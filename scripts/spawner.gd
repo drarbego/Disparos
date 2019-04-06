@@ -6,6 +6,7 @@ var timer
 
 export(float) var minWaitTime
 export(float) var maxWaitTime
+export(bool) var testMode
 
 func _ready():
 	randomize()
@@ -13,7 +14,7 @@ func _ready():
 	timer.wait_time = rand_range(minWaitTime, maxWaitTime)
 	timer.start()
 
-func _on_timer_timeout():
+func spawn():
 	var enemy = Enemy.instance()
 	var stickTo = randi() % 2;
 	if stickTo == 0:
@@ -27,3 +28,7 @@ func _on_timer_timeout():
 	self.get_parent().add_child(enemy)
 	timer.wait_time = rand_range(minWaitTime, maxWaitTime)
 	timer.start()
+
+func _on_timer_timeout():
+	if !testMode:
+		spawn()
