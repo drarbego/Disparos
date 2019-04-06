@@ -26,7 +26,7 @@ func fire_listener():
 
 		canShoot = false
 
-		canShootTimer.wait_time = 1
+		canShootTimer.wait_time = len(get_tree().get_nodes_in_group('enemies'))
 		canShootTimer.start()
 
 func look_at_mouse():

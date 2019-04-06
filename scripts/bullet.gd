@@ -18,5 +18,5 @@ func _process(delta):
 
 func _on_bullet_area_entered(area):
 	if area.is_in_group('enemies'):
-		area.freeze()
+		area.attachToPlayer()
 		queue_free()
