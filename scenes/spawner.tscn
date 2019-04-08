@@ -2,11 +2,11 @@
 
 [ext_resource path="res://scripts/spawner.gd" type="Script" id=1]
 
-[node name="spawner" type="Node" index="0"]
+[node name="spawner" type="Node"]
 
 script = ExtResource( 1 )
 minWaitTime = 0.0
-maxWaitTime = 1.0
+maxWaitTime = 2.0
 
 [node name="timer" type="Timer" parent="." index="0"]
 
