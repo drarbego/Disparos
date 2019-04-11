@@ -12,6 +12,9 @@ var attachedTexture # TODO create texture
 
 onready var CELL_WIDTH = get_viewport().size.x / numberOfCells
 onready var CELL_HEIGHT = get_viewport().size.y / numberOfCells
+onready var enemy_state = {
+	'freezeTimer': get_node('freeze')
+}
 
 func get_velocity(delta):
 	var velocity = Vector2()
@@ -61,27 +64,24 @@ func updateNeighbors():
 			if hasNeighbors:
 				queue_free()
 
+func resetFreezeWaitTime():
+	enemy_state.freezeTimer.set_wait_time(freezeTime)
+	enemy_state.freezeTimer.start()
+
 func freeze():
 	isFrozen = true
-	snapToGrid()
 	get_node('sprite').texture = frozenTexture
-	updateNeighbors()
+	resetFreezeWaitTime()
+
+func explode():
 	get_node('/root/world').addToScore(1)
-	var timer = get_node('freeze')
-	timer.wait_time = freezeTime
-	timer.start()
+	queue_free()
 
 func attachToPlayer():
 	if isAttachedToPlayer:
-		get_node('/root/world').addToScore(1)
-		queue_free()
+		explode()
 	isAttachedToPlayer = true
 	# get_node('sprite').texture = attachedTexture
-
-func snapToGrid():
-	var x = int(position.x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH/2
-	var y = int(position.y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT/2
-	position = Vector2(x, y)
 
 func _on_freeze_timeout():
 	isFrozen = false
@@ -91,22 +91,10 @@ func _on_freeze_timeout():
 func _on_enemy_area_entered(area):
 	if self.is_queued_for_deletion():
 		return
+
 	if area.is_in_group("player"):
-		if isFrozen:
-			var angle = rad2deg(area.position.angle_to_point(position) + PI)
-			if angle >= 315 || angle < 45:
-				# TODO make sure there is no frozen enemy on the tile at the right
-				position.x += CELL_WIDTH
-			if angle >= 45 && angle < 135:
-				position.y += CELL_HEIGHT
-			if angle >= 135 && angle < 225:
-				position.x -= CELL_WIDTH
-			if angle >= 225 && angle < 315:
-				position.y -= CELL_HEIGHT
-			self.updateNeighbors()
-		else:
-			print('muerto por jugarle al vergas')
-			get_tree().quit()
+		print('muerto por jugarle al vergas')
+		get_tree().quit()
 	elif area.is_in_group("enemies"):
 		area.queue_free()
 		get_node('/root/world').addToScore(-1)

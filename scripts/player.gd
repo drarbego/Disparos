@@ -2,8 +2,20 @@ extends Area2D
 
 export (int) var speed = 200
 var Bullet = preload('res://scenes/bullet.tscn')
-var canShoot = true
-var canShootTimer
+onready var world = get_node('/root/world')
+var player_state
+
+func createBullet():
+	var bullet = Bullet.instance()
+	bullet.position = position
+	world.add_child(bullet)
+	player_state.canShoot = false
+
+func resetOverheatWaitTime():
+	var waitTime = world.countEnemiesAttachedToPlayer() + 1
+	player_state.canShootTimer.set_wait_time(waitTime)
+	player_state.canShootTimer.start()
+	world.setOverheat(waitTime)
 
 func getVelocity(delta):
 	var velocity = Vector2()
@@ -18,18 +30,13 @@ func getVelocity(delta):
 	return velocity.normalized() * speed * delta
 
 func handleUserInput():
-	if Input.is_action_just_released('click') && canShoot:
-		var bullet = Bullet.instance()
-		bullet.position = position
-		var world = get_node('/root/world')
-		world.add_child(bullet)
+	# TODO move input handling to world 
+	if Input.is_action_just_released('click') && player_state.canShoot:
+		createBullet()
+		resetOverheatWaitTime()
+	if Input.is_action_just_released('powerUp') && player_state.canShoot:
+		world.freezeAllEnemies()
 
-		canShoot = false
-
-		var waitTime = world.getGunWaitTime()
-		print('wait time = ', waitTime)
-		canShootTimer.set_wait_time(waitTime)
-		canShootTimer.start()
 
 func lookAtMouse():
 	var mouse_pos = get_global_mouse_position()
@@ -38,7 +45,10 @@ func lookAtMouse():
 
 func _ready():
 	set_process(true)
-	canShootTimer = get_node('canShoot')
+	player_state = {
+		'canShoot': true,
+		'canShootTimer': get_node('canShoot')
+	}
 
 func _process(delta):
 	lookAtMouse()
@@ -46,5 +56,5 @@ func _process(delta):
 	position += getVelocity(delta)
 
 func _on_canShoot_timeout():
-	canShoot = true
-	get_node('/root/world/').setOverheat(0)
+	player_state.canShoot = true
+	world.setOverheat(0)

@@ -17,11 +17,14 @@ func setOverheat(value):
 	var GUI = get_node('GUI')
 	GUI.updateOverheat(value)
 
-func getGunWaitTime():
+func countEnemiesAttachedToPlayer():
 	var counter = 0
 	for enemy in get_tree().get_nodes_in_group('enemies'):
 		if enemy.isAttachedToPlayer:
 			counter = counter + 1
-	var waitTime = counter if counter > 1 else 1
-	setOverheat(waitTime)
-	return waitTime
+	return counter
+
+func freezeAllEnemies():
+	for enemy in get_tree().get_nodes_in_group('enemies'):
+		enemy.freeze()
+
