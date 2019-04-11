@@ -2,7 +2,6 @@ extends Area2D
 
 export(int) var speed
 export(float) var freezeTime
-export(int) var numberOfCells
 var isFrozen = false
 var isAttachedToPlayer = false
 
@@ -10,8 +9,8 @@ var defaultTexture = preload('res://sprites/enemy.png')
 var frozenTexture = preload('res://sprites/enemy__frozen.png')
 var attachedTexture # TODO create texture
 
-onready var CELL_WIDTH = get_viewport().size.x / numberOfCells
-onready var CELL_HEIGHT = get_viewport().size.y / numberOfCells
+onready var world = get_node('/root/world')
+onready var player = get_node('/root/world/player')
 onready var enemy_state = {
 	'freezeTimer': get_node('freeze')
 }
@@ -29,40 +28,13 @@ func get_velocity(delta):
 	return velocity.normalized() * speed * delta
 
 func _process(delta):
-	if isAttachedToPlayer:
+	if isFrozen:
+		return
+	elif isAttachedToPlayer:
 		position += get_velocity(delta)
 	else:
-		if not isFrozen:
-			var player = get_node('/root/world/player')
-			var direction = (player.position - position).normalized()
-			position += direction * speed * delta
-
-func getGridPosition(offsetX, offsetY):
-	var cellWidth = get_viewport().size.x / numberOfCells
-	var cellHeight = get_viewport().size.y / numberOfCells
-	offsetX *= cellWidth
-	offsetY *= cellHeight
-	return Vector2(position.x + offsetX, position.y + offsetY)
-
-func updateNeighbors():
-	var enemies = get_tree().get_nodes_in_group('enemies')
-	for enemy in enemies:
-		if enemy.isFrozen:
-			var hasNeighbors = false
-			if position == enemy.getGridPosition(-1, 0):
-				enemy.queue_free()
-				hasNeighbors = true
-			if position == enemy.getGridPosition(1, 0):
-				enemy.queue_free()
-				hasNeighbors = true
-			if position == enemy.getGridPosition(0, -1):
-				enemy.queue_free()
-				hasNeighbors = true
-			if position == enemy.getGridPosition(0, 1):
-				enemy.queue_free()
-				hasNeighbors = true
-			if hasNeighbors:
-				queue_free()
+		var direction = (player.position - position).normalized()
+		position += direction * speed * delta
 
 func resetFreezeWaitTime():
 	enemy_state.freezeTimer.set_wait_time(freezeTime)
@@ -74,7 +46,7 @@ func freeze():
 	resetFreezeWaitTime()
 
 func explode():
-	get_node('/root/world').addToScore(1)
+	world.addToScore(1)
 	queue_free()
 
 func attachToPlayer():
@@ -97,5 +69,5 @@ func _on_enemy_area_entered(area):
 		get_tree().quit()
 	elif area.is_in_group("enemies"):
 		area.queue_free()
-		get_node('/root/world').addToScore(-1)
+		world.addToScore(-1)
 		queue_free()
