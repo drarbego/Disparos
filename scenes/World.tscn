@@ -5,20 +5,14 @@
 [ext_resource path="res://scenes/spawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/GUI.tscn" type="PackedScene" id=4]
 
-[node name="world" type="Node2D" index="0"]
-
+[node name="world" type="Node2D"]
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="player" parent="." index="0" instance=ExtResource( 2 )]
-
+[node name="player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 560, 310 )
 
-[node name="spawner" parent="." index="1" instance=ExtResource( 3 )]
-
+[node name="spawner" parent="." instance=ExtResource( 3 )]
 minWaitTime = 1.0
 maxWaitTime = 5.0
 
-[node name="GUI" parent="." index="2" instance=ExtResource( 4 )]
-
-
+[node name="GUI" parent="." instance=ExtResource( 4 )]

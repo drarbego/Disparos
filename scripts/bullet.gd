@@ -1,10 +1,14 @@
 extends Area2D
 
-export(int) var speed = 800
+export(int) var speed
 var direction = Vector2()
+var damage = 1
 
 func _ready():
 	direction = (get_global_mouse_position() - position).normalized()
+
+func setDamage(points):
+	damage = points
 
 func isOutOfTheScreen():
 	var isInsideX = position.x <= get_viewport().size.x && position.x >= 0
@@ -18,5 +22,6 @@ func _process(delta):
 
 func _on_bullet_area_entered(area):
 	if area.is_in_group('enemies'):
-		area.attachToPlayer()
-		queue_free()
+		# area.attachToPlayer()
+		area.decreaseLife(damage)
+		queue_free() # destroy bullet

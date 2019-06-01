@@ -4,16 +4,36 @@ export(int) var speed
 export(float) var freezeTime
 var isFrozen = false
 var isAttachedToPlayer = false
+var lifePoints = 1
 
 var defaultTexture = preload('res://sprites/enemy.png')
 var frozenTexture = preload('res://sprites/enemy__frozen.png')
-var attachedTexture # TODO create texture
 
 onready var world = get_node('/root/world')
 onready var player = get_node('/root/world/player')
 onready var enemy_state = {
 	'freezeTimer': get_node('freeze')
 }
+
+func setSpeed(s):
+	speed = s
+
+func getSpeed():
+	return speed
+
+func setLifePoints(p):
+	lifePoints = p
+
+func getLifePoints():
+	return lifePoints
+
+func decreaseLife(points):
+	setLifePoints(getLifePoints() - abs(points))
+	if getLifePoints() <= 0:
+		die()
+
+func increaseLife(points):
+	setLifePoints(getLifePoints() + abs(points))
 
 func get_velocity(delta):
 	var velocity = Vector2()
@@ -45,15 +65,23 @@ func freeze():
 	get_node('sprite').texture = frozenTexture
 	resetFreezeWaitTime()
 
-func explode():
+func die():
 	world.addToScore(1)
 	queue_free()
+
+func explode():
+	die()
 
 func attachToPlayer():
 	if isAttachedToPlayer:
 		explode()
 	isAttachedToPlayer = true
 	# get_node('sprite').texture = attachedTexture
+
+func merge(area):
+	# calculate position
+	increaseLife(area.getLifePoints())
+	setSpeed(getSpeed() + area.getSpeed())
 
 func _on_freeze_timeout():
 	isFrozen = false
@@ -68,6 +96,6 @@ func _on_enemy_area_entered(area):
 		print('muerto por jugarle al vergas')
 		get_tree().quit()
 	elif area.is_in_group("enemies"):
+		# TODO cuando choquen los enemigos, se combinan en uno mas poderoso
+		merge(area)
 		area.queue_free()
-		world.addToScore(-1)
-		queue_free()

@@ -4,45 +4,21 @@
 [ext_resource path="res://sprites/enemy.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 16, 16 )
 
 [node name="enemy" type="Area2D" groups=[
 "enemies",
 ]]
-
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
 script = ExtResource( 1 )
 speed = 100
 freezeTime = 5.0
-numberOfCells = 10
 
-[node name="shape" type="CollisionShape2D" parent="." index="0"]
-
+[node name="shape" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="sprite" type="Sprite" parent="." index="1"]
-
+[node name="sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-_sections_unfolded = [ "Visibility" ]
 
-[node name="freeze" type="Timer" parent="." index="2"]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = false
-autostart = false
-
+[node name="freeze" type="Timer" parent="."]
 [connection signal="area_entered" from="." to="." method="_on_enemy_area_entered"]
-
 [connection signal="timeout" from="freeze" to="." method="_on_freeze_timeout"]
-
-
