@@ -23,6 +23,7 @@ func getSpeed():
 
 func setLifePoints(p):
 	lifePoints = p
+	updateGui()
 
 func getLifePoints():
 	return lifePoints
@@ -99,3 +100,8 @@ func _on_enemy_area_entered(area):
 		# TODO cuando choquen los enemigos, se combinan en uno mas poderoso
 		merge(area)
 		area.queue_free()
+
+func updateGui():
+	var lifePointsLabel = get_node('hud/container/lifePoints')
+	lifePointsLabel.set_text(str(lifePoints))
+

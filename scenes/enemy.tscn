@@ -20,5 +20,28 @@ shape = SubResource( 1 )
 texture = ExtResource( 2 )
 
 [node name="freeze" type="Timer" parent="."]
+
+[node name="hud" type="MarginContainer" parent="."]
+margin_left = -16.2451
+margin_top = 20.7576
+margin_right = 23.7549
+margin_bottom = 60.7576
+
+[node name="container" type="HBoxContainer" parent="hud"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="message" type="Label" parent="hud/container"]
+margin_top = 13.0
+margin_right = 24.0
+margin_bottom = 27.0
+text = "life:"
+
+[node name="lifePoints" type="Label" parent="hud/container"]
+margin_left = 28.0
+margin_top = 13.0
+margin_right = 36.0
+margin_bottom = 27.0
+text = "0"
 [connection signal="area_entered" from="." to="." method="_on_enemy_area_entered"]
 [connection signal="timeout" from="freeze" to="." method="_on_freeze_timeout"]

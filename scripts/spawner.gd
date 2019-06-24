@@ -15,6 +15,7 @@ func _ready():
 
 func spawn():
 	var enemy = Enemy.instance()
+	enemy.setLifePoints(randi()%4 + 1)
 	var stickTo = randi() % 2;
 	if stickTo == 0:
 		enemy.position.x = 0
