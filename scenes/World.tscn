@@ -16,3 +16,5 @@ minWaitTime = 1.0
 maxWaitTime = 5.0
 
 [node name="GUI" parent="." instance=ExtResource( 4 )]
+
+[node name="camera" type="Camera2D" parent="."]

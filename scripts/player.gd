@@ -5,6 +5,8 @@ var Bullet = preload('res://scenes/bullet.tscn')
 onready var world = get_node('/root/world')
 var player_state
 
+signal move
+
 func createBullet():
 	var bullet = Bullet.instance()
 	bullet.position = position
@@ -27,6 +29,9 @@ func getVelocity(delta):
 		velocity.y += 1
 	if Input.is_action_pressed('up'):
 		velocity.y -= 1
+	if velocity != Vector2(0, 0):
+		# TODO connect this signal to the camera in order to move to a different room
+		emit_signal('move')
 	return velocity.normalized() * speed * delta
 
 func handleUserInput():
@@ -38,11 +43,6 @@ func handleUserInput():
 		world.freezeAllEnemies()
 
 
-func lookAtMouse():
-	var mouse_pos = get_global_mouse_position()
-	var angle = position.angle_to_point(mouse_pos)
-	rotation = angle + PI/2
-
 func _ready():
 	set_process(true)
 	player_state = {
@@ -51,7 +51,6 @@ func _ready():
 	}
 
 func _process(delta):
-	lookAtMouse()
 	handleUserInput()
 	position += getVelocity(delta)
 
