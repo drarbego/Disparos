@@ -1,13 +1,18 @@
 extends Area2D
+# Looks like we need a kinematic body
 
 export (int) var speed = 200
 var Bullet = preload('res://scenes/bullet.tscn')
 onready var world = get_node('/root/world')
 var player_state
 
-signal move
+var right_texture = preload('res://sprites/Kausagi_right.png')
+var left_texture = preload('res://sprites/Kausagi_left.png')
+
+signal moving
 
 func createBullet():
+	# TODO fix bullets (only works in room 1)
 	var bullet = Bullet.instance()
 	bullet.position = position
 	world.add_child(bullet)
@@ -23,15 +28,17 @@ func getVelocity(delta):
 	var velocity = Vector2()
 	if Input.is_action_pressed('right'):
 		velocity.x += 1
+		$sprite.set_texture(right_texture)
 	if Input.is_action_pressed('left'):
 		velocity.x -= 1
+		$sprite.set_texture(left_texture)
 	if Input.is_action_pressed('down'):
 		velocity.y += 1
 	if Input.is_action_pressed('up'):
 		velocity.y -= 1
 	if velocity != Vector2(0, 0):
-		# TODO connect this signal to the camera in order to move to a different room
-		emit_signal('move')
+		emit_signal('moving')
+
 	return velocity.normalized() * speed * delta
 
 func handleUserInput():
@@ -52,7 +59,7 @@ func _ready():
 
 func _process(delta):
 	handleUserInput()
-	position += getVelocity(delta)
+	position += self.getVelocity(delta)
 
 func _on_canShoot_timeout():
 	player_state.canShoot = true

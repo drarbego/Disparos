@@ -30,4 +30,5 @@ func spawn():
 	timer.start()
 
 func _on_timer_timeout():
-	spawn()
+	# spawn()
+	pass
