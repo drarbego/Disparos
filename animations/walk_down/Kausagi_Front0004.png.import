@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/kausagi_right.png-8b1918a63d5e4d49af6c0ac5c306b5a3.stex"
+path="res://.import/Kausagi_Front0004.png-caa111bb107859c710ab5fbfc6d0204b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/kausagi_right.png"
-dest_files=[ "res://.import/kausagi_right.png-8b1918a63d5e4d49af6c0ac5c306b5a3.stex" ]
+source_file="res://animations/walk_down/Kausagi_Front0004.png"
+dest_files=[ "res://.import/Kausagi_Front0004.png-caa111bb107859c710ab5fbfc6d0204b.stex" ]
 
 [params]
 

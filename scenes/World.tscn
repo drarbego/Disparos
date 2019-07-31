@@ -68,7 +68,6 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 2, 0, 2, 2, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 
 
 [node name="player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 560, 310 )
-speed = null
 
 [node name="spawner" parent="." instance=ExtResource( 4 )]
 minWaitTime = 1.0
