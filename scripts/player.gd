@@ -1,15 +1,10 @@
 extends Area2D
 # Looks like we need a kinematic body
 
-export (int) var speed = 200
+var speed = 200
 var Bullet = preload('res://scenes/bullet.tscn')
 onready var world = get_node('/root/world')
 var player_state
-
-var right_texture = preload('res://sprites/kausagi_right.png')
-var left_texture = preload('res://sprites/kausagi_left.png')
-var up_texture = preload('res://sprites/kausagi_up.png')
-var down_texture = preload('res://sprites/enemy.png')
 
 signal moving
 
@@ -30,18 +25,21 @@ func getVelocity(delta):
     var velocity = Vector2()
     if Input.is_action_pressed('right'):
         velocity.x += 1
-        $sprite.set_texture(right_texture)
+        not $sprite.is_playing() and $sprite.play('walk_right')
     if Input.is_action_pressed('left'):
         velocity.x -= 1
-        $sprite.set_texture(left_texture)
+        not $sprite.is_playing() and $sprite.play('walk_left')
     if Input.is_action_pressed('down'):
         velocity.y += 1
-        $sprite.set_texture(down_texture)
+        not $sprite.is_playing() and $sprite.play('walk_down')
     if Input.is_action_pressed('up'):
         velocity.y -= 1
-        $sprite.set_texture(up_texture)
+        not $sprite.is_playing() and $sprite.play('walk_up')
     if velocity != Vector2(0, 0):
         emit_signal('moving')
+    else:
+        $sprite.set_frame(0)
+        $sprite.stop()
 
     return velocity.normalized() * speed * delta
 
