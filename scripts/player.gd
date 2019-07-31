@@ -1,5 +1,5 @@
 extends Area2D
-# Looks like we need a kinematic body
+# TODO change type to kinematic body
 
 var speed = 200
 var Bullet = preload('res://scenes/bullet.tscn')
